@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Front do API Laravel</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+        <script src="js/funkcje.js"></script>
+    </head>
+    <body>
+        <h1>Front-end dla REST API</h1>
+        <h2>Lista produktów:</h2>
+        <div id="main"> </div>
+
+        <input type="text" id="id" hidden>
+        <input type="text" placeholder="Name" id="name">
+        <input type="text" placeholder="Price" id="price">
+        <button id="add">Dodaj nowy produkt</button>
+
+        <div id="divedit" style="visibility: hidden">
+            <input type="text" id="editId" disabled>
+            <input type="text" id="editName">
+            <input type="text" id="editPrice">
+            <button id="edit" onclick="update()">Zmień</button>
+        </div>
+        <div id="err" style="background: red"></div>
+    </body>
+</html>
