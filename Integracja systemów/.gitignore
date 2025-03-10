@@ -1,1 +1,5 @@
 lab01
+Assets/
+bin/
+obj/
+.vs/
