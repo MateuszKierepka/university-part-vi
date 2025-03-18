@@ -1,0 +1,644 @@
+================================================ DATABASE TABLES CREATION CODE ================================================ 
+CREATE TABLE PaymentCurrencies (
+    currency_id INT PRIMARY KEY,
+    currency_name VARCHAR(50) NOT NULL,
+    currency_code VARCHAR(10) NOT NULL
+);
+CREATE TABLE PaymentMethods (
+    method_id INT PRIMARY KEY,
+    method_name VARCHAR(50) NOT NULL
+);
+CREATE TABLE Categories (
+    category_id INT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL
+);
+CREATE TABLE SubscriptionPlans (
+    plan_id INT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    price DOUBLE PRECISION NOT NULL,
+    duration VARCHAR(50) NOT NULL,
+    description TEXT
+);
+CREATE TABLE MembershipStatus (
+    status_id INT PRIMARY KEY,
+    code VARCHAR(20) NOT NULL
+);
+CREATE TABLE Languages (
+    language_id INT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    language_code VARCHAR(10) NOT NULL
+);
+CREATE TABLE Addresses (
+    address_id INT PRIMARY KEY,
+    postal_code VARCHAR(20),
+    city VARCHAR(100),
+    street VARCHAR(200),
+    house_number VARCHAR(20),
+    apartment VARCHAR(20),
+    country VARCHAR(100)
+);
+CREATE TABLE Users (
+    user_id INT PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    address_id INT,
+    FOREIGN KEY (address_id) REFERENCES Addresses(address_id)
+);
+CREATE TABLE Actors (
+    actor_id INT PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL
+);
+CREATE TABLE Directors (
+    director_id INT PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL
+);
+CREATE TABLE Movies (
+    movie_id INT PRIMARY KEY,
+    title VARCHAR(200) NOT NULL,
+    description TEXT,
+    release_year INT,
+    duration INT,
+    rating DOUBLE PRECISION
+);
+CREATE TABLE Subtitles (
+    movie_id INT NOT NULL,
+    language_id INT NOT NULL,
+    PRIMARY KEY (movie_id, language_id),
+    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id),
+    FOREIGN KEY (language_id) REFERENCES Languages(language_id)
+);
+CREATE TABLE AudioTracks (
+    movie_id INT NOT NULL,
+    language_id INT NOT NULL,
+    PRIMARY KEY (movie_id, language_id),
+    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id),
+    FOREIGN KEY (language_id) REFERENCES Languages(language_id)
+);
+CREATE TABLE Favourites (
+    user_id INT NOT NULL,
+    movie_id INT NOT NULL,
+    PRIMARY KEY (user_id, movie_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id)
+);
+CREATE TABLE Memberships (
+    membership_id INT PRIMARY KEY,
+    user_id INT NOT NULL,
+    plan_id INT NOT NULL,
+    status_id INT NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (plan_id) REFERENCES SubscriptionPlans(plan_id),
+    FOREIGN KEY (status_id) REFERENCES MembershipStatus(status_id)
+);
+CREATE TABLE Ratings (
+    rating_id INT PRIMARY KEY,
+    user_id INT NOT NULL,
+    movie_id INT NOT NULL,
+    rating INT NOT NULL,
+    rating_date DATE NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id)
+);
+CREATE TABLE Reviews (
+    review_id INT PRIMARY KEY,
+    rating_id INT UNIQUE NOT NULL,
+    comment TEXT,
+    FOREIGN KEY (rating_id) REFERENCES Ratings(rating_id)
+);
+CREATE TABLE WatchHistory (
+    history_id INT PRIMARY KEY,
+    user_id INT NOT NULL,
+    movie_id INT NOT NULL,
+    last_watch_date DATE NOT NULL,
+    time_watched INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id)
+);
+CREATE TABLE Payments (
+    payment_id INT PRIMARY KEY,
+    amount DOUBLE PRECISION NOT NULL,
+    payment_date DATE NOT NULL,
+    method_id INT NOT NULL,
+    currency_id INT NOT NULL,
+    FOREIGN KEY (method_id) REFERENCES PaymentMethods(method_id),
+    FOREIGN KEY (currency_id) REFERENCES PaymentCurrencies(currency_id)
+);
+CREATE TABLE Rentals (
+    rental_id INT PRIMARY KEY,
+    movie_id INT NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    payment_id INT,
+    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id),
+    FOREIGN KEY (payment_id) REFERENCES Payments(payment_id)
+);
+CREATE TABLE MovieCategory (
+    movie_id INT NOT NULL,
+    category_id INT NOT NULL,
+    PRIMARY KEY (movie_id, category_id),
+    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id),
+    FOREIGN KEY (category_id) REFERENCES Categories(category_id)
+);
+CREATE TABLE MovieActor (
+    movie_id INT NOT NULL,
+    actor_id INT NOT NULL,
+    PRIMARY KEY (movie_id, actor_id),
+    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id),
+    FOREIGN KEY (actor_id) REFERENCES Actors(actor_id)
+);
+CREATE TABLE MovieDirector (
+    movie_id INT NOT NULL,
+    director_id INT NOT NULL,
+    PRIMARY KEY (movie_id, director_id),
+    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id),
+    FOREIGN KEY (director_id) REFERENCES Directors(director_id)
+);
+
+================================================ DATABASE TABLES INSERTION CODE ================================================
+
+INSERT INTO PaymentCurrencies (currency_id, currency_name, currency_code) VALUES
+(1, 'United States Dollar', 'USD'),
+(2, 'Euro', 'EUR'),
+(3, 'Polish Złoty', 'PLN'),
+(4, 'British Pound', 'GBP');
+INSERT INTO PaymentMethods (method_id, method_name) VALUES
+(1, 'Credit Card'),
+(2, 'PayPal'),
+(3, 'Bank Transfer'),
+(4, 'Apple Pay'),
+(5, 'Google Pay');
+INSERT INTO Categories (category_id, name) VALUES
+(1, 'Action'),
+(2, 'Comedy'),
+(3, 'Drama'),
+(4, 'Science Fiction'),
+(5, 'Thriller'),
+(6, 'Romance'),
+(7, 'Documentary'),
+(8, 'Horror');
+INSERT INTO SubscriptionPlans (plan_id, name, price, duration, description) VALUES
+(1, 'Basic', 9.99, '1 month', 'Basic streaming plan with standard definition'),
+(2, 'Standard', 14.99, '1 month', 'HD streaming on two devices'),
+(3, 'Premium', 19.99, '1 month', 'Ultra HD streaming on four devices'),
+(4, 'Annual Basic', 99.99, '1 year', 'Basic plan with annual discount'),
+(5, 'Student', 7.99, '1 month', 'Discounted plan for students'),
+(6, 'Family', 24.99, '1 month', 'Up to 5 profiles, family sharing');
+INSERT INTO MembershipStatus (status_id, code) VALUES
+(1, 'Active'),
+(2, 'Expired'),
+(3, 'Pending'),
+(4, 'Canceled');
+INSERT INTO Languages (language_id, name, language_code) VALUES
+(1, 'English', 'EN'),
+(2, 'Spanish', 'ES'),
+(3, 'French', 'FR'),
+(4, 'German', 'DE'),
+(5, 'Polish', 'PL'),
+(6, 'Italian', 'IT'),
+(7, 'Japanese', 'JA'),
+(8, 'Korean', 'KO');
+INSERT INTO Addresses (address_id, postal_code, city, street, house_number, apartment, country) VALUES
+(1, '00-001', 'Warsaw', 'Marszałkowska', '10', '15', 'Poland'),
+(2, '10001', 'New York', 'Broadway', '123', '4A', 'United States'),
+(3, '75001', 'Paris', 'Rue de Rivoli', '45', '2B', 'France'),
+(4, '90210', 'Los Angeles', 'Hollywood Blvd', '1500', '22', 'United States'),
+(5, '60614', 'Chicago', 'Michigan Avenue', '500', '30B', 'United States'),
+(6, '20001', 'London', 'Oxford Street', '250', '12C', 'United Kingdom'),
+(7, '80331', 'Munich', 'Maximilianstraße', '15', '5D', 'Germany');
+INSERT INTO Users (user_id, first_name, last_name, email, password, address_id) VALUES
+(1, 'Jan', 'Kowalski', 'jan.kowalski@example.com', 'hashed_password_1', 1),
+(2, 'Maria', 'Smith', 'maria.smith@example.com', 'hashed_password_2', 2),
+(3, 'Pierre', 'Dubois', 'pierre.dubois@example.com', 'hashed_password_3', 3),
+(4, 'Emily', 'Johnson', 'emily.johnson@example.com', 'hashed_password_4', 4),
+(5, 'Anna', 'Nowak', 'anna.nowak@example.com', 'hashed_password_5', 1),
+(6, 'John', 'Doe', 'john.doe@example.com', 'hashed_password_6', 2),
+(7, 'Sophie', 'Martin', 'sophie.martin@example.com', 'hashed_password_7', 3),
+(8, 'Michael', 'Brown', 'michael.brown@example.com', 'hashed_password_8', 4);
+INSERT INTO Actors (actor_id, first_name, last_name) VALUES
+(1, 'Tom', 'Hanks'),
+(2, 'Meryl', 'Streep'),
+(3, 'Leonardo', 'DiCaprio'),
+(4, 'Emma', 'Watson'),
+(5, 'Brad', 'Pitt'),
+(6, 'Robert', 'Downey Jr.'),
+(7, 'Scarlett', 'Johansson'),
+(8, 'Denzel', 'Washington'),
+(9, 'Natalie', 'Portman'),
+(10, 'Chris', 'Hemsworth'),
+(11, 'Morgan', 'Freeman'),
+(12, 'Anne', 'Hathaway'),
+(13, 'Ryan', 'Reynolds'),
+(14, 'Sandra', 'Bullock'),
+(15, 'Joaquin', 'Phoenix');
+INSERT INTO Directors (director_id, first_name, last_name) VALUES
+(1, 'Steven', 'Spielberg'),
+(2, 'Christopher', 'Nolan'),
+(3, 'Quentin', 'Tarantino'),
+(4, 'Martin', 'Scorsese'),
+(5, 'David', 'Fincher'),
+(6, 'Greta', 'Gerwig'),
+(7, 'Denis', 'Villeneuve'),
+(8, 'Wes', 'Anderson');
+INSERT INTO Movies (movie_id, title, description, release_year, duration, rating) VALUES
+(1, 'Inception', 'A mind-bending sci-fi thriller', 2010, 148, 8),
+(2, 'Forrest Gump', 'A heartwarming story of life''s journey', 1994, 142, 9),
+(3, 'The Wolf of Wall Street', 'A story of excess and ambition', 2013, 180, 8),
+(4, 'Pulp Fiction', 'A non-linear crime drama', 1994, 154, 9),
+(5, 'Interstellar', 'A space exploration epic', 2014, 169, 9),
+(6, 'The Social Network', 'Story of Facebook''s founding', 2010, 120, 8),
+(7, 'Parasite', 'Dark social satire from South Korea', 2019, 132, 9),
+(8, 'Blade Runner 2049', 'Dystopian sci-fi sequel', 2017, 164, 8),
+(9, 'Lady Bird', 'Coming-of-age drama', 2017, 94, 8),
+(10, 'Joker', 'Psychological character study', 2019, 122, 9),
+(11, 'The Grand Budapest Hotel', 'Whimsical comedy-drama', 2014, 99, 8),
+(12, 'Gone Girl', 'Psychological thriller', 2014, 149, 8);
+INSERT INTO Subtitles (movie_id, language_id) VALUES
+(1, 1), (1, 2), (1, 3),
+(2, 1), (2, 4), (2, 5),
+(3, 1), (3, 2), (3, 3),
+(4, 1), (4, 4), (4, 5),
+(5, 1), (5, 6), (5, 7),
+(6, 1), (6, 3), (6, 8),
+(7, 1), (7, 2), (7, 8),
+(8, 1), (8, 4), (8, 7),
+(9, 1), (9, 5), (9, 3),
+(10, 1), (10, 2), (10, 6),
+(11, 1), (11, 4), (11, 7),
+(12, 1), (12, 3), (12, 8);
+INSERT INTO AudioTracks (movie_id, language_id) VALUES
+(1, 1), (1, 2), (1, 3),
+(2, 1), (2, 4), (2, 5),
+(3, 1), (3, 2), (3, 3),
+(4, 1), (4, 4), (4, 5),
+(5, 1), (5, 6), (5, 7),
+(6, 1), (6, 3), (6, 8),
+(7, 1), (7, 2), (7, 8),
+(8, 1), (8, 4), (8, 7),
+(9, 1), (9, 5), (9, 3),
+(10, 1), (10, 2), (10, 6),
+(11, 1), (11, 4), (11, 7),
+(12, 1), (12, 3), (12, 8);
+INSERT INTO Favourites (user_id, movie_id) VALUES
+(1, 1), (1, 2),
+(2, 3), (2, 4),
+(3, 1), (3, 3),
+(4, 2), (4, 4),
+(5, 5), (5, 6),
+(6, 7), (6, 8),
+(7, 9), (7, 10),
+(8, 11), (8, 12);
+INSERT INTO Memberships (membership_id, user_id, plan_id, status_id, start_date, end_date) VALUES
+(1, 1, 2, 1, '2024-01-01', '2024-01-31'),
+(2, 2, 3, 1, '2024-02-01', '2024-02-29'),
+(3, 3, 1, 1, '2024-03-01', '2024-03-31'),
+(4, 4, 4, 1, '2024-01-01', '2025-01-01'),
+(5, 5, 5, 1, '2024-02-01', '2024-02-29'),
+(6, 6, 6, 1, '2024-01-15', '2024-02-15'),
+(7, 7, 2, 1, '2024-03-01', '2024-03-31'),
+(8, 8, 3, 1, '2024-02-15', '2024-03-15');
+INSERT INTO Ratings (rating_id, user_id, movie_id, rating, rating_date) VALUES
+(1, 1, 1, 8, '2024-02-15'),
+(2, 2, 2, 9, '2024-03-01'),
+(3, 3, 3, 7, '2024-02-20'),
+(4, 4, 4, 9, '2024-03-10'),
+(5, 5, 5, 9, '2024-02-20'),
+(6, 6, 6, 8, '2024-03-05'),
+(7, 7, 7, 9, '2024-02-25'),
+(8, 8, 8, 7, '2024-03-15');
+INSERT INTO Reviews (review_id, rating_id, comment) VALUES
+(1, 1, 'Brilliant sci-fi movie with incredible concepts!'),
+(2, 2, 'A timeless classic that never gets old.'),
+(3, 3, 'Intense and provocative film.'),
+(4, 4, 'A masterpiece of non-linear storytelling.'),
+(5, 5, 'An incredible space odyssey with deep philosophical undertones.'),
+(6, 6, 'Fascinating look into the tech world''s early days.'),
+(7, 7, 'A groundbreaking film that challenges social dynamics.'),
+(8, 8, 'Visually stunning sequel to a classic sci-fi film.');
+INSERT INTO WatchHistory (history_id, user_id, movie_id, last_watch_date, time_watched) VALUES
+(1, 1, 1, '2024-02-15', 8400),
+(2, 2, 2, '2024-03-01', 8520),
+(3, 3, 3, '2024-02-20', 10800),
+(4, 4, 4, '2024-03-10', 9240),
+(5, 5, 5, '2024-02-20', 10140),
+(6, 6, 6, '2024-03-05', 7200),
+(7, 7, 7, '2024-02-25', 7920),
+(8, 8, 8, '2024-03-15', 9840);
+INSERT INTO Payments (payment_id, amount, payment_date, method_id, currency_id) VALUES
+(1, 14.99, '2024-01-01', 1, 1),
+(2, 19.99, '2024-02-01', 2, 2),
+(3, 9.99, '2024-03-01', 3, 3),
+(4, 99.99, '2024-01-01', 4, 1),
+(5, 7.99, '2024-02-01', 5, 3),
+(6, 24.99, '2024-01-15', 4, 1),
+(7, 14.99, '2024-03-01', 2, 2),
+(8, 19.99, '2024-02-15', 3, 4);
+INSERT INTO Rentals (rental_id, movie_id, start_date, end_date, payment_id) VALUES
+(1, 1, '2024-02-15', '2024-02-22', 1),
+(2, 2, '2024-03-01', '2024-03-08', 2),
+(3, 3, '2024-02-20', '2024-02-27', 3),
+(4, 4, '2024-03-10', '2024-03-17', 4),
+(5, 5, '2024-02-20', '2024-02-27', 5),
+(6, 6, '2024-03-05', '2024-03-12', 6),
+(7, 7, '2024-02-25', '2024-03-04', 7),
+(8, 8, '2024-03-15', '2024-03-22', 8);
+INSERT INTO MovieCategory (movie_id, category_id) VALUES
+(1, 4), (1, 5),
+(2, 3), (2, 6),
+(3, 3), (3, 5),
+(4, 3), (4, 1),
+(5, 4), (5, 3),
+(6, 3), (6, 5),
+(7, 3), (7, 5),
+(8, 4), (8, 5),
+(9, 3), (9, 6),
+(10, 3), (10, 5),
+(11, 2), (11, 3),
+(12, 5);
+INSERT INTO MovieActor (movie_id, actor_id) VALUES
+(1, 3),
+(2, 1),
+(3, 3),
+(4, 5),
+(5, 3), (5, 2),
+(6, 6),
+(7, 15),
+(8, 3),
+(9, 12),
+(10, 15),
+(11, 1),
+(12, 14);
+INSERT INTO MovieDirector (movie_id, director_id) VALUES
+(1, 2),
+(2, 1),
+(3, 3),
+(4, 3),
+(5, 2),
+(6, 5),
+(7, 3),
+(8, 7),
+(9, 6),
+(10, 3),
+(11, 8),
+(12, 5);
+
+================================================ DATABASE TABLES TRIGGERS CODE ================================================
+1) trigger ktory usuwa automatycznie film z ulubionych filmow jezeli film zostal usuniety z platformy
+CREATE OR REPLACE FUNCTION remove_favourite_function()
+RETURNS TRIGGER AS $$
+BEGIN
+    DELETE FROM favourites WHERE movie_id = OLD.movie_id;
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER remove_favourite
+AFTER DELETE ON movies
+FOR EACH ROW
+EXECUTE FUNCTION remove_favourite_function();
+
+2) trigger który automatycznie updateuje rating jak pojawi sie nowa opinia o filmie
+CREATE OR REPLACE FUNCTION update_movie_rating_function()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE movies
+    SET rating = (SELECT AVG(rating) FROM ratings WHERE movie_id = NEW.movie_id)
+    WHERE movie_id = NEW.movie_id;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_movie_rating
+AFTER INSERT ON ratings
+FOR EACH ROW
+EXECUTE FUNCTION update_movie_rating_function();
+
+3) trigger który automatycznie zmienia status członkostwa po wygaśnięciu subskrypcji
+CREATE OR REPLACE FUNCTION update_membership_status_function()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.end_date < CURRENT_DATE THEN
+        UPDATE memberships
+        SET status_id = (SELECT status_id FROM membershipstatus WHERE code = 'Expired')
+        WHERE membership_id = NEW.membership_id;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_membership_status
+AFTER UPDATE ON memberships
+FOR EACH ROW
+EXECUTE FUNCTION update_membership_status_function();
+
+================================================ DATABASE TABLES UPDATE/DELETE CODE ================================================
+
+UPDATE SubscriptionPlans SET price = 19.99
+WHERE plan_id = 1;
+
+DELETE FROM Users WHERE user_id = 5;
+
+================================================ DATABASE TABLES QUERIES CODE ================================================
+
+-- 10 Najpopularniejszych filmow --
+SELECT 
+    m.title,
+    COUNT(f.user_id) AS favourites_count
+FROM movies m
+JOIN favourites f ON m.movie_id = f.movie_id
+GROUP BY m.movie_id, m.title
+ORDER BY favourites_count DESC
+LIMIT 10;
+
+-- Liczba użytkowników z aktywną subskrypcją --
+SELECT 
+    sp.name AS subscription_plan, 
+    COUNT(m.user_id) AS users_count
+FROM memberships m
+JOIN subscriptionplans sp ON m.plan_id = sp.plan_id
+JOIN Membershipstatus ms ON m.status_id = ms.status_id
+WHERE ms.code = 'Active'
+GROUP BY sp.plan_id, sp.name
+ORDER BY users_count DESC;
+
+-- Liczba zarobków z subskrypcji z konkretnego miesiąca
+SELECT 
+    COALESCE(SUM(amount), 0) AS total_revenue
+FROM payments
+WHERE payment_date >= '2024-02-01' AND payment_date < '2024-03-01';
+
+-- Osoby które obejrzały najwięcej filmów --
+SELECT 
+    u.user_id, 
+    u.first_name, 
+    u.last_name,
+    COUNT(wh.history_id) AS watch_count
+FROM users u
+JOIN watchHistory wh ON u.user_id = wh.user_id
+GROUP BY u.user_id, u.first_name, u.last_name
+ORDER BY watch_count DESC
+LIMIT 10;
+
+-- Filmy z najwyższą średnią ocen (liczymy tylko te które mają ponad 10 ocen wystawionych)--
+SELECT
+    m.movie_id,
+    m.title,
+    AVG(r.rating) AS average_rating,
+    COUNT(r.rating_id) AS ratings_count
+FROM movies m
+JOIN ratings r ON m.movie_id = r.movie_id
+GROUP BY m.movie_id, m.title
+HAVING COUNT(r.rating_id) > 10
+ORDER BY average_rating DESC
+LIMIT 10;
+
+-- Najbardziej popularne kategorie bazując na czasie oglądania --
+SELECT
+    c.name AS category,
+    SUM(wh.time_watched) AS total_minutes_watched,
+    COUNT(DISTINCT wh.user_id) AS unique_viewers
+FROM categories c
+JOIN moviecategory mc ON c.category_id = mc.category_id
+JOIN movies m ON mc.movie_id = m.movie_idLEFT JOIN WatchHistory wh ON m.movie_id = wh.movie_id
+JOIN watchhistory wh ON m.movie_id = wh.movie_id
+GROUP BY c.category_id, c.name ---------------?
+ORDER BY total_minutes_watched DESC;
+
+-- Zyski na podstawie metody płatności oraz walucie za ostatni kwartał
+SELECT 
+    pm.method_name,
+    pc.currency_name,
+    COUNT(p.payment_id) AS transactions_count,
+    SUM(p.amount) AS total_amount
+FROM payments p
+JOIN paymentmethods pm ON p.method_id = pm.method_id
+JOIN paymentcurrencies pc ON p.currency_id = pc.currency_id
+WHERE p.payment_date >= CURRENT_DATE - INTERVAL '3 months'
+GROUP BY pm.method_id, pm.mLEFT JOIN WatchHistory wh ON m.movie_id = wh.movie_idethod_name, pc.currency_id, pc.currency_name
+ORDER BY total_amount DESC;
+
+-- Rozkład użytkowników na podstawie kraju pochodzenia --
+SELECT 
+    a.country,
+    COUNT(DISTINCT u.user_id) AS users_count,
+    COUNT(DISTINCT wh.movie_id) AS movies_watched,
+    AVG(wh.time_watched) AS avg_watch_time_minutes
+FROM users u
+JOIN addresses a ON u.address_id = a.address_id
+LEFT JOIN watchhistory wh ON u.user_id = wh.user_id
+GROUP BY a.country
+ORDER BY users_count DESC;
+
+-- Reżyserowie których filmy cieszą się największym zainteresowaniem --
+SELECT 
+    d.director_id,
+    CONCAT(d.first_name, ' ', d.last_name) AS director_name,
+    COUNT(DISTINCT m.movie_id) AS movies_count,
+    AVG(m.rating) AS avg_movie_rating,
+    COUNT(DISTINCT wh.user_id) AS total_viewers,
+    SUM(wh.time_watched) AS total_watch_minutes
+FROM directors d
+JOIN moviedirector md ON d.director_id = md.director_id
+JOIN movies m ON md.movie_id = m.movie_id
+LEFT JOIN WatchHistory wh ON m.movie_id = wh.movie_id
+GROUP BY d.director_id, d.first_name, d.last_name
+ORDER BY total_viewers DESC
+LIMIT 10;
+
+
+-- Najczęściej wypożyczane filmy z ostatniego kwartału --
+SELECT
+    m.movie_id,
+    m.title,
+    COUNT(r.rental_id) AS rental_count
+FROM movies m
+JOIN rentals r ON m.movie_id = r.movie_id
+GROUP BY m.movie_id, m.title
+ORDER BY rental_count DESC
+LIMIT 10;
+
+-- Filmy z napisami po angielsku i niemiecku --
+SELECT
+    m.movie_id,
+    m.title,
+    m.release_year
+FROM movies m
+JOIN subtitles s1 ON m.movie_id = s1.movie_id
+JOIN languages l1 ON s1.language_id = l1.language_id
+JOIN subtitles s2 ON m.movie_id = s2.movie_id
+JOIN languages l2 ON s2.language_id = l2.language_id
+WHERE l1.name = 'English' AND l2.name = 'German'
+ORDER BY m.release_year DESC;
+
+-- Najgorzej oceniane filmy --
+SELECT
+    m.movie_id,
+    m.title,
+    AVG(r.rating) AS average_rating,
+    COUNT(r.rating_id) AS rating_count
+FROM movies m
+JOIN ratings r ON m.movie_id = r.movie_id
+GROUP BY m.movie_id, m.title
+ORDER BY average_rating ASC
+LIMIT 10;
+
+-- Uzytkownicy, ktorych subksrypcja konczy sie w ciagu najblizszego miesiaca --
+SELECT 
+    u.user_id,
+    u.first_name,
+    u.last_name,
+    u.email,
+    m.end_date,
+    sp.name AS plan_name
+FROM Users u
+JOIN memberships m ON u.user_id = m.user_id
+JOIN subscriptionplans sp ON m.plan_id = sp.plan_id
+JOIN membershipstatus ms ON m.status_id = ms.status_id
+WHERE ms.code = 'Active' 
+AND m.end_date BETWEEN CURRENT_DATE AND (CURRENT_DATE + INTERVAL '30 days')
+ORDER BY m.end_date;
+
+-- Aktorzy którzy wystąpili w conajmniej 3 filmach --
+SELECT
+    a.actor_id,
+    a.first_name,
+    a.last_name,
+    COUNT(ma.movie_id) AS movie_count
+FROM actors a
+JOIN movieactor ma ON a.actor_id = ma.actor_id
+GROUP BY a.actor_id, a.first_name, a.last_name
+HAVING COUNT(ma.movie_id) >= 3
+ORDER BY movie_count DESC;
+
+-- Najpopularniejsze filmy wsrod uzytkownikow z polski --
+SELECT 
+    m.movie_id,
+    m.title,
+    a.country,
+    COUNT(wh.history_id) AS watch_count
+FROM movies m
+JOIN watchhistory wh ON m.movie_id = wh.movie_id
+JOIN users u ON wh.user_id = u.user_id
+JOIN addresses a ON u.address_id = a.address_id
+WHERE a.country = 'Poland'
+GROUP BY m.movie_id, m.title, a.country
+ORDER BY watch_count DESC
+LIMIT 10;
+
+-- Średnia ocena filmów po kategoriach
+SELECT
+    c.name AS category_name,
+    COUNT(DISTINCT m.movie_id) AS movies_count,
+    AVG(r.rating) AS average_rating
+FROM categories c
+JOIN moviecategory mc ON c.category_id = mc.category_id
+JOIN movies m ON mc.movie_id = m.movie_id
+JOIN ratings r ON m.movie_id = r.movie_id
+GROUP BY c.category_id, c.name
+ORDER BY average_rating DESC;
+
