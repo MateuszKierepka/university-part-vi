@@ -1,0 +1,62 @@
+ZADANIE 5.2.
+1. db.mongodb_kolekcja.find({ status: "popular" })
+2. db.mongodb_kolekcja.find({ "topic.name": "Hardware" })
+3. db.mongodb_kolekcja.find({ 
+    comments: { $gt: 50, $lt: 100 } 
+})
+4. db.mongodb_kolekcja.find(
+  { media: "news" },
+  { title: 1, _id: 0 }
+)
+5. db.mongodb_kolekcja.find(
+  { 
+    "user.name": /^M/, 
+    "user.profileviews": { $gt: 200 } 
+  },
+  { 
+    "user.name": 1, 
+    "user.profileviews": 1, 
+    _id: 0 
+  }
+)
+6. db.mongodb_kolekcja.find(
+  { 
+    "media": { $in: ["images", "videos"] } 
+  }
+)
+7. db.mongodb_kolekcja.aggregate([
+  { 
+    $match: { "media": "news" } 
+  },
+  { 
+    $group: {
+      _id: null,
+      averageLikes: { $avg: "$diggs" }
+    }
+  }
+])
+8. db.mongodb_kolekcja.aggregate([
+  {
+    $match: { "container.name": "Science" }
+  },
+  {
+    $group: {
+      _id: null,
+      totalComments: { $sum: "$comments" }
+    }
+  }
+])
+10. db.mongodb_kolekcja.find(
+  {},
+  { "user.name": 1, "user.profileviews": 1, _id: 0 }
+).sort({ "user.profileviews": -1 }).limit(1)
+
+ZADANIE 5.3.
+1. db.sales.find(
+  { "items.tags": "school" },
+  { "customer.email": 1, "saleDate": 1, "_id": 0 }
+)
+2. db.sales.find(
+  { "items": { $size: 4 } }
+)
+])

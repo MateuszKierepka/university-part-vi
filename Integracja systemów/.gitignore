@@ -1,5 +1,7 @@
-lab01
 Assets/
 bin/
 obj/
 .vs/
+*.sln
+*.mp4
+*.txt
