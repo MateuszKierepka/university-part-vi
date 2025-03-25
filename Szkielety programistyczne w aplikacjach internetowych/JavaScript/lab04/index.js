@@ -5,8 +5,7 @@ function wyswietlLiczby(...argumenty){
 wyswietlLiczby(4,6,7,9,0,2) // [4, 6, 7, 9, 0, 2]
 
 function sumator(...liczby) {
-    const suma = liczby.reduce((acc, val) => acc + val, 0);
-    return `Suma liczb: ${liczby.join(', ')} wynosi ${suma}.`;
+    return `Suma liczb: ${liczby.join(', ')} wynosi ${liczby.reduce((acc, val) => acc + val, 0)}.`;
 }
 console.log(sumator(1, 2, 3));
 
@@ -65,7 +64,7 @@ const wtorek = [
     }
 ]
 // 1. 
-const dwadni = [poniedzialek, wtorek].reduce((acc, curr) => [...acc, ...curr], []);
+const dwadni = [poniedzialek, wtorek].reduce((acc, curr) => [...acc, ...curr]);
 console.log(dwadni);
 // 2.
 const godziny = dwadni.map(zadanie => zadanie.czas / 60);
@@ -100,18 +99,16 @@ const firmy = [
     {nazwa:"Funds", kategoria:"Finanse", poczatek:2000, koniec:2021}
 ]
 // a)
-const firmyIT = firmy.filter(firma => firma.kategoria === "IT");
-console.log(firmyIT);
+const it = firmy.filter(firma => firma.kategoria === "IT");
+console.log(it);
 // b)
 const firmy90 = firmy.filter(firma => 
-    firma.poczatek >= 1990 && firma.poczatek <= 1999 && 
-    firma.koniec >= 1990 && firma.koniec <= 1999
+    firma.poczatek >= 1990 && firma.poczatek <= 1999 && firma.koniec >= 1990 && firma.koniec <= 1999
 );
 console.log(firmy90);
 // c)
 const firmy10Lat = firmy.filter(firma => {
-    const czasDzialania = firma.koniec - firma.poczatek;
-    return czasDzialania > 10;
+    return firma.koniec - firma.poczatek > 10;
 });
 console.log(firmy10Lat);
 
@@ -136,11 +133,11 @@ const calc = (a, b, p) => {
         default: { return }
     }
 }
-// a)
-// exports.calc = calc
+// // a)
+exports.calc = calc
 
 // b)
 // export { calc };
 
-// c)
-export default calc;
+// // c)
+// export default calc;
