@@ -1,0 +1,36 @@
+<component name="libraryTable">
+  <library name="sun.xml.ws.rt" type="repository">
+    <properties maven-id="com.sun.xml.ws:rt:2.3.2" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/sun/xml/ws/rt/2.3.2/rt-2.3.2.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/jakarta/activation/jakarta.activation-api/1.2.1/jakarta.activation-api-1.2.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/sun/xml/ws/policy/2.7.6/policy-2.7.6.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/jaxb/jaxb-runtime/2.3.2/jaxb-runtime-2.3.2.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/jaxb/txw2/2.3.2/txw2-2.3.2.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/sun/istack/istack-commons-runtime/3.0.8/istack-commons-runtime-3.0.8.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/sun/xml/fastinfoset/FastInfoset/1.2.16/FastInfoset-1.2.16.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/gmbal/gmbal/4.0.0/gmbal-4.0.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/external/management-api/3.2.1/management-api-3.2.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/pfl/pfl-basic/4.0.1/pfl-basic-4.0.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/pfl/pfl-basic-tools/4.0.1/pfl-basic-tools-4.0.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/pfl/pfl-tf-tools/4.0.1/pfl-tf-tools-4.0.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/pfl/pfl-tf/4.0.1/pfl-tf-4.0.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/pfl/pfl-asm/4.0.1/pfl-asm-4.0.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/pfl/pfl-dynamic/4.0.1/pfl-dynamic-4.0.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jvnet/staxex/stax-ex/1.8.1/stax-ex-1.8.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/sun/xml/stream/buffer/streambuffer/1.5.7/streambuffer-1.5.7.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jvnet/mimepull/mimepull/1.9.11/mimepull-1.9.11.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/woodstox/woodstox-core/5.1.0/woodstox-core-5.1.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/woodstox/stax2-api/4.1/stax2-api-4.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/ha/ha-api/3.1.12/ha-api-3.1.12.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/sun/xml/messaging/saaj/saaj-impl/1.5.1/saaj-impl-1.5.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/jakarta/xml/ws/jakarta.xml.ws-api/2.3.2/jakarta.xml.ws-api-2.3.2.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/jakarta/xml/bind/jakarta.xml.bind-api/2.3.2/jakarta.xml.bind-api-2.3.2.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/jakarta/xml/soap/jakarta.xml.soap-api/1.4.1/jakarta.xml.soap-api-1.4.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/jakarta/jws/jakarta.jws-api/1.1.1/jakarta.jws-api-1.1.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/jakarta/annotation/jakarta.annotation-api/1.3.4/jakarta.annotation-api-1.3.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
