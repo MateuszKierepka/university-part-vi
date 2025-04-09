@@ -8,28 +8,25 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var imageData = ImageData()
-    @State private var selectedImages: [ImageCategory: String] = [:]
-    @State private var displayOrder: [ImageCategory] = []
+    @ObservedObject var MyViewModel: MyViewModel
+    @State var wybraneObrazki: [ImageCategory: String] = [:]
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
-                ForEach(displayOrder.reversed(), id: \.self) { category in
-                    if let imageName = selectedImages[category] {
+                ForEach(ImageCategory.allCases, id: \.self) {
+                    category in
+                    if let imageName = wybraneObrazki[category] {
                         Image(imageName)
                             .resizable()
                             .scaledToFit()
-                            .frame(maxWidth: 300, maxHeight: 200)
+                            .frame(height: 150)
                             .padding()
                     }
                 }
                 Spacer()
-                NavigationLink(destination: ImagePickerView(selectedImages: $selectedImages, displayOrder: $displayOrder)) {
-                    Text("Wylosuj element")
-                        .foregroundColor(.blue)
-                        .padding()
-                }
+                NavigationLink("Wylosuj element", destination: NextView(MyViewModel: MyViewModel, wybraneObrazki: $wybraneObrazki))
+                    .padding()
             }
             .navigationTitle("Wybrane elementy")
         }
@@ -38,6 +35,33 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(MyViewModel: MyViewModel())
     }
 }
+
+//struct ContentView: View {
+//    @ObservedObject var ViewModel : MyViewModel
+//    var body: some View {
+//        NavigationStack {
+//            VStack {
+//                Image("f2")
+//                    .scaledToFit()
+//
+//                Text(ViewModel.item)
+//                    .font(.largeTitle)
+//                    .foregroundColor(.red)
+//
+//                NavigationLink("idz dalej",
+//                               destination: NextView(viewModel: ViewModel))
+//                    .font(.largeTitle)
+//            }
+//            .padding()
+//            .navigationTitle("Main")
+//        }
+//    }
+//}
+//
+//#Preview {
+//    ContentView(ViewModel: MyViewModel())
+//}
+//

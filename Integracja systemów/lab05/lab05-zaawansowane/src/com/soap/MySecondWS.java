@@ -7,16 +7,18 @@ import java.util.List;
 @WebService(endpointInterface = "com.soap.MySecondSOAPInterface")
 public class MySecondWS implements MySecondSOAPInterface{
     @Override
-    public ArrayList<String> getUsers() {
-        List<String> users = new ArrayList<>();
-        users.add("Mateusz Kierepka");
-        users.add("Jan Kowalski");
-        users.add("Anna Nowak");
-        return (ArrayList<String>) users;
+    public UserList getUsers() {
+        List<User> users = new ArrayList<>();
+        users.add(new User("Mateusz Kierepka", 22));
+        users.add(new User("Beata Nowak", 23));
+        users.add(new User("Jan Kowalski", 24));
+        UserList userList = new UserList();
+        userList.setUsers(users);
+        return userList;
     }
 
     @Override
-    public int addNumbers(int a, int b) {
-        return a + b;
+    public double multiplyNum(double num1, double num2) {
+        return num1 * num2;
     }
 }

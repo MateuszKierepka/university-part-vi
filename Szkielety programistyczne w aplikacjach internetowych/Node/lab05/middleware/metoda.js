@@ -1,0 +1,1 @@
+// nie wiem o jaka metode chodzi w zadaniu, treść zadania jest bardzo niejasna

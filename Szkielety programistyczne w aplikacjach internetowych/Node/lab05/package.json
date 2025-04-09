@@ -1,0 +1,27 @@
+{
+  "name": "express-serwer",
+  "version": "1.0.0",
+  "description": "Prosta aplikacja serwerowa oparta na szkielecie Express",
+  "main": "zad_01.js",
+  "scripts": {
+    "start": "node zad_01.js",
+    "dev": "nodemon zad_01.js"
+  },
+  "keywords": [
+    "express",
+    "serwer"
+  ],
+  "author": "Jan",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "express-react-views": "^0.11.0",
+    "express-validator": "^7.2.1",
+    "hbs": "^4.2.0",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
