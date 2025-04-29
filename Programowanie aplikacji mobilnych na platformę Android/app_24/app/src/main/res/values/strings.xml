@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">app_2</string>
+    <string name="tv_manufacturer_label">Producent:</string>
+    <string name="tv_model_label">Model:</string>
+    <string name="tv_android_version_label">Wersja Androida:</string>
+    <string name="tv_web_site_label">Adres WWW:</string>
+    <string name="btn_web_site_label">Strona www</string>
+    <string name="btn_cancel_label">Anuluj</string>
+    <string name="btn_save_label">Zapisz</string>
 </resources>

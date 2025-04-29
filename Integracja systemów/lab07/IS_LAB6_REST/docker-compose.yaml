@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  app:
+    container_name: myfirst_dockerized_rest_server
+    build:
+      dockerfile: rest_api/Dockerfile
+      context: .
+    volumes:
+      - ./rest_api:/var/www/html
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+  db:
+    container_name: myfirst_dockerized_database_server
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+    volumes:
+      - ./db_dumps/world.sql:/docker-entrypoint-initdb.d/world.sql
+    ports:
+      - "3306:3306"

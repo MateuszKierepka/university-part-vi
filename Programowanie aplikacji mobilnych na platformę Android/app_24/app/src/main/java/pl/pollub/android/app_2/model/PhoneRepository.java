@@ -22,4 +22,15 @@ public class PhoneRepository {
     public void deleteAllPhones(){
         PhoneRoomDatabase.databaseWriteExecutor.execute(() -> this.phoneDao.deleteAllPhones());
     }
+    public void addNewPhone(Phone phone){
+        PhoneRoomDatabase.databaseWriteExecutor.execute(() -> this.phoneDao.insert(phone));
+    }
+
+    public void updatePhone(Phone phone) {
+        PhoneRoomDatabase.databaseWriteExecutor.execute(() -> this.phoneDao.update(phone));
+    }
+
+    public void deletePhone(Phone phone) {
+        PhoneRoomDatabase.databaseWriteExecutor.execute(() -> this.phoneDao.delete(phone));
+    }
 }

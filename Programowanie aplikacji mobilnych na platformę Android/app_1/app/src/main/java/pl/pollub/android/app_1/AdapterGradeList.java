@@ -9,6 +9,7 @@ import java.util.List;
 
 import pl.pollub.android.app_1.databinding.SubjectRowBinding;
 
+// adapter dla RecyclerView ktory wyswietla liste przedmiotow i umozliwia wybor oceny dla kazdego z nich
 public class AdapterGradeList extends RecyclerView.Adapter<AdapterGradeList.SubjectViewHolder> {
     private final List<SubjectGrade> subjectGradeList;
     private LayoutInflater inflater;
@@ -18,6 +19,7 @@ public class AdapterGradeList extends RecyclerView.Adapter<AdapterGradeList.Subj
         this.subjectGradeList = subjectGradeList;
     }
 
+    // tworzenie nowego widoku dla pojedynczego przedmiotu w liscie
     @NonNull
     @Override
     public SubjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -25,6 +27,7 @@ public class AdapterGradeList extends RecyclerView.Adapter<AdapterGradeList.Subj
         return new SubjectViewHolder(SubjectRowBinding.inflate(inflater));
     }
 
+    // wiaze dane przedmiotu z odpowiednimi widokami w wierszu
     @Override
     public void onBindViewHolder(@NonNull SubjectViewHolder holder, int position) {
         SubjectGrade currentSubject = this.subjectGradeList.get(position);
@@ -47,15 +50,18 @@ public class AdapterGradeList extends RecyclerView.Adapter<AdapterGradeList.Subj
         }
     }
 
+    // zwraca liczbe przedmiotow wyswietlanych przez adapter
     @Override
     public int getItemCount() {
         return this.subjectGradeList != null ? this.subjectGradeList.size() : 0;
     }
 
+    // przechowuje widoki zwiazane z przedmiotem oraz obsluguje interakcje z uzytkownikiem takie jak wybor oceny
     public class SubjectViewHolder extends RecyclerView.ViewHolder {
         private SubjectRowBinding binding;
         private SubjectGrade currentSubject;
 
+        // nasluchuje zmiany oceny w radio group
         public SubjectViewHolder(@NonNull SubjectRowBinding binding) {
             super(binding.getRoot());
             this.binding = binding;

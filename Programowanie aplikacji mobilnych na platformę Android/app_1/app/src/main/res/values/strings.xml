@@ -5,13 +5,13 @@
     <string name="tv_last_name_label">Nazwisko:</string>
     <string name="et_last_name_hint">Wprowadź nazwisko</string>
     <string name="tv_number_of_grades_label">Liczba ocen:</string>
-    <string name="et_number_of_grades_hint">Wprowadź liczę ocen (5-15)</string>
+    <string name="et_number_of_grades_hint">Wprowadź liczę ocen (5–15)</string>
     <string name="btn_submit_label">Oceny</string>
     <string name="et_first_name_error_text">Imię musi być wprowadzone!</string>
     <string name="et_last_name_error_text">Nazwisko musi być wprowadzone!</string>
     <string name="et_number_of_grades_error_text">Liczba ocen musi być wprowadzona</string>
     <string name="et_number_of_grades_format_error_text">Liczba ocen musi być liczbą od 5 do 15!</string>
-    <string name="btn_send_garades_label">Oblicz średnią</string>
+    <string name="btn_send_grades_label">Oblicz średnią</string>
     <string name="rb_grade_2_label">2</string>
     <string name="rb_grade_3_label">3</string>
     <string name="rb_grade_4_label">4</string>
@@ -33,4 +33,9 @@
         <item>PN</item>
         <item>NI</item>
     </string-array>
+    <string name="average_grade_label">Średnia ocen: %.2f</string>
+    <string name="btn_positive_result">Super :)</string>
+    <string name="btn_negative_result">Tym razem mi nie poszło</string>
+    <string name="positive_result_message">Gratulacje! Otrzymujesz zaliczenie!</string>
+    <string name="negative_result_message">Wysyłam podanie o zaliczenie warunkowe</string>
 </resources>

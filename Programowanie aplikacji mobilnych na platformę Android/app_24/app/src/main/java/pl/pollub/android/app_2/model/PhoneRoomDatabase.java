@@ -38,7 +38,9 @@ abstract class PhoneRoomDatabase extends RoomDatabase {
             super.onCreate(db);
             databaseWriteExecutor.execute(() -> {
                 PhoneDao dao = INSTANCE.phoneDao();
-                dao.insert(new Phone("12","google","pixel","google.pl"));
+                dao.insert(new Phone("12","google","pixel 6a","google.pl"));
+                dao.insert(new Phone("12","google","pixel 7a","google.pl"));
+                dao.insert(new Phone("12","google","pixel 8a","google.pl"));
             });
         }
     };

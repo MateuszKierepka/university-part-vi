@@ -11,10 +11,12 @@
         android:id="@+id/rv_grade_list"
         tools:listitem="@layout/subject_row"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-<Button
-    android:id="@+id/btn_send_grades"
-    android:text="@string/btn_send_garades_label"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+    />
+    <Button
+        android:id="@+id/btn_send_grades"
+        android:text="@string/btn_send_grades_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+    />
 </LinearLayout>
