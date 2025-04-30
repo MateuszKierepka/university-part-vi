@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikacja Pogodowa</title>
+    <link rel="stylesheet" href="/templates/styles/style.css">
+</head>
+<body>
+    <h1>Aplikacja Pogodowa</h1>
+    <div class="form-container">
+        <form id="weatherForm">
+            <label for="country">Kraj:</label>
+            <select name="country" id="country">
+                <option value="" disabled selected>Wybierz kraj</option>
+                {{range .locations}}
+                    <option value="{{.}}">{{.}}</option>
+                {{end}}
+            </select>
+            
+            <label for="city">Miasto:</label>
+            <select name="city" id="city" disabled>
+                <option value="" disabled selected>Najpierw wybierz kraj</option>
+            </select>
+            
+            <button type="submit" id="submitBtn" disabled>Pokaż pogodę</button>
+        </form>
+    </div>
+    
+    <div id="weatherResult"></div>
+
+    <script>
+        const countrySelect = document.getElementById("country");
+        const citySelect = document.getElementById("city");
+        const form = document.getElementById("weatherForm");
+        const resultDiv = document.getElementById("weatherResult");
+        const submitBtn = document.getElementById("submitBtn");
+
+        countrySelect.addEventListener("change", async () => {
+            const country = countrySelect.value;
+            
+            if (!country) {
+                citySelect.disabled = true;
+                citySelect.innerHTML = '<option value="" disabled selected>Najpierw wybierz kraj</option>';
+                submitBtn.disabled = true;
+                return;
+            }
+
+            try {
+                const response = await fetch(`/cities/${country}`);
+                const data = await response.json();
+                
+                citySelect.innerHTML = '<option value="" disabled selected>Wybierz miasto</option>';
+                
+                if (data.cities) {
+                    data.cities.forEach(city => {
+                        const option = document.createElement("option");
+                        option.value = city;
+                        option.textContent = city;
+                        citySelect.appendChild(option);
+                    });
+                    citySelect.disabled = false;
+                }
+            } catch (error) {
+                console.error("Błąd podczas pobierania miast:", error);
+            }
+        });
+
+        citySelect.addEventListener("change", () => {
+            submitBtn.disabled = !citySelect.value;
+        });
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            
+            resultDiv.innerHTML = '<div class="loader"></div>';
+            
+            // Jawnie pobierz wartości z pól formularza
+            const country = countrySelect.value;
+            const city = citySelect.value;
+            
+            console.log("Wysyłanie danych:", { country, city }); // Debugowanie
+            
+            // Utwórz URLSearchParams zamiast FormData
+            const formData = new URLSearchParams();
+            formData.append('country', country);
+            formData.append('city', city);
+            
+            try {
+                const response = await fetch("/weather", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    resultDiv.innerHTML = `<div class="error">${data.error}</div>`;
+                    if (data.details) {
+                        resultDiv.innerHTML += `<div class="error">Szczegóły: ${data.details}</div>`;
+                    }
+                } else {
+                    const weatherInfo = data.current;
+                    const locationInfo = data.location;
+                    
+                    const weatherHtml = `
+                        <div class="weather-card">
+                            <div class="weather-header">
+                                <div class="location-info">
+                                    <h2>${locationInfo.name}, ${locationInfo.country}</h2>
+                                    <p>Dane aktualne na: ${locationInfo.localtime}</p>
+                                </div>
+                                <div class="temp-display">${weatherInfo.temp_c}°C</div>
+                            </div>
+                            
+                            <div class="weather-main">
+                                <div class="weather-icon">
+                                    <img src="${weatherInfo.condition.icon}" alt="${weatherInfo.condition.text}">
+                                </div>
+                                <div class="weather-condition">
+                                    <p>${weatherInfo.condition.text}</p>
+                                    <p>Odczuwalna: ${weatherInfo.feelslike_c}°C</p>
+                                </div>
+                            </div>
+                            
+                            <div class="weather-details">
+                                <h3>Szczegółowe dane</h3>
+                                <div class="detail-row">
+                                    <span class="detail-label">Wilgotność:</span>
+                                    <span>${weatherInfo.humidity}%</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Prędkość wiatru:</span>
+                                    <span>${weatherInfo.wind_kph} km/h</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Kierunek wiatru:</span>
+                                    <span>${weatherInfo.wind_dir}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Ciśnienie:</span>
+                                    <span>${weatherInfo.pressure_mb} hPa</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Widoczność:</span>
+                                    <span>${weatherInfo.vis_km} km</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Indeks UV:</span>
+                                    <span>${weatherInfo.uv}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    resultDiv.innerHTML = weatherHtml;
+                }
+            } catch (error) {
+                console.error("Błąd:", error);
+                resultDiv.innerHTML = `<div class="error">Wystąpił błąd podczas pobierania danych: ${error.message}</div>`;
+            }
+        });
+    </script>
+</body>
+</html>
