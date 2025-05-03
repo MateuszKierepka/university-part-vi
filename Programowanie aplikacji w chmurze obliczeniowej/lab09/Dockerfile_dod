@@ -1,0 +1,45 @@
+# syntax=docker/dockerfile:1.4
+
+# etap budowania
+FROM golang:1.23-alpine AS builder
+
+# instalacja git i ssh
+RUN apk add --no-cache git openssh-client
+
+# utworzenie katalogi roboczego
+WORKDIR /app
+
+# sklonowanie repozytorium z github'a
+RUN --mount=type=secret,id=github_token \
+    git clone https://$(cat /run/secrets/github_token)@github.com/MateuszKierepka/university-part-vi.git repo && \
+    cd repo/Programowanie\ aplikacji\ w\ chmurze\ obliczeniowej/lab09 && \
+    cp -r . /app
+
+# kompilacja aplikacji
+RUN go build -o app main.go
+
+FROM alpine:3.18
+
+# imie i nazwisko zgodnie ze standardem oci
+LABEL org.opencontainers.image.authors="Mateusz Kierepka"
+
+# instalacja curl'a
+RUN apk --no-cache add curl
+
+WORKDIR /app
+
+# kopiowanie skompilowanej aplikacji i 
+COPY --from=builder /app/app .
+
+# kopiowanie plików html i css
+COPY templates ./templates
+
+# wyeksponowanie portu
+EXPOSE 8080
+
+# healthcheck
+HEALTHCHECK --interval=10s --timeout=1s \
+  CMD curl -f http://localhost:8080/ || exit 1
+
+# uruchomienie aplikacji
+CMD ["./app"]
