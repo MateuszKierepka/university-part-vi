@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Nowy Profil",
+    "Projects": [
+      {
+        "Path": "IntegracjaSystemow8.AppHost\\IntegracjaSystemow8.AppHost.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Form1\\Form1.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
