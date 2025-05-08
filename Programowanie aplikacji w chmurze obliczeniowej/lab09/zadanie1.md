@@ -1,4 +1,4 @@
-# README - Realizacja zadania 1. - część obowiązkowa
+# Realizacja zadania 1. - część obowiązkowa
 
 ## Podpunkt 3.
 

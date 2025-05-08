@@ -1,4 +1,4 @@
-# README - Realizacja zadania 1. - część dodatkowa
+# Realizacja zadania 1. - część dodatkowa
 
 ## Stworzenie buildera opartego na sterowniku docker-container
 
