@@ -1,6 +1,6 @@
 # Realizacja zadania obowiązkowego z laboratorium 11
 
-## Należy uruchomić trzy kontenery o nazwach odpowiednio: web1, web2, web3, które zawierać będą serwery nginx w wersji latest w taki sposób by:
+### Należy uruchomić trzy kontenery o nazwach odpowiednio: web1, web2, web3, które zawierać będą serwery nginx w wersji latest w taki sposób by:
 
 #### • wszystkie te serwery były podłączone do jednej sieci mostkowej definiowanej przez użytkownika (nazwa sieci: lab11net)
 
