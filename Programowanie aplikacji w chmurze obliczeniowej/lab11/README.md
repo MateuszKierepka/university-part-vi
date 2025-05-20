@@ -2,13 +2,13 @@
 
 ## Należy uruchomić trzy kontenery o nazwach odpowiednio: web1, web2, web3, które zawierać będą serwery nginx w wersji latest w taki sposób by:
 
-### • wszystkie te serwery były podłączone do jednej sieci mostkowej definiowanej przez użytkownika (nazwa sieci: lab11net)
+#### • wszystkie te serwery były podłączone do jednej sieci mostkowej definiowanej przez użytkownika (nazwa sieci: lab11net)
 
-### • wszystkie serwery były dostępne z sieci zewnętrznej (z poziomu używanego komputera, laptopa)
+#### • wszystkie serwery były dostępne z sieci zewnętrznej (z poziomu używanego komputera, laptopa)
 
-### • poszczególne serwery wyświetlały prosta stronę html zawierającą: numer laboratorium, imię i nazwisko studenta a strona ta została podłączona do każdego z serwerów nginx wykorzystując wolumeny z uprawnieniami dostępu: read-only
+#### • poszczególne serwery wyświetlały prosta stronę html zawierającą: numer laboratorium, imię i nazwisko studenta a strona ta została podłączona do każdego z serwerów nginx wykorzystując wolumeny z uprawnieniami dostępu: read-only
 
-### • poszczególne serwery zapisywały logi do trzech dedykowanych katalogów w podkatalogu katalogu domowego o nazwie lab11. Katalog lab11 ma zostać dołączony do kontenerów również wykorzystując wolumeny
+#### • poszczególne serwery zapisywały logi do trzech dedykowanych katalogów w podkatalogu katalogu domowego o nazwie lab11. Katalog lab11 ma zostać dołączony do kontenerów również wykorzystując wolumeny
 
 ```bash
 docker network create --driver=bridge --subnet=10.0.0.0/24 lab11net
