@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">app_3</string>
+    <string name="tv_url_label">Url:</string>
+    <string name="et_url_default_value">https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.12.24.tar.xz</string>
+    <string name="btn_get_file_info_label">Pobierz informacje</string>
+    <string name="tv_file_size_label">Rozmiar pliku:</string>
+    <string name="tv_file_type_label">Typ pliku:</string>
+    <string name="btn_get_file_label">Pobierz plik</string>
+    <string name="tv_downloaded_bytes_label">Pobrano bajtów:</string>
+    <string name="notification_channel_name">Download notifications</string>
+    <string name="notification_channel_description">Notification about downlooads</string>
+    <string name="notification_title_downloading">Pobieranie pliku</string>
+    <string name="notification_text_downloading">Postęp</string>
+    <string name="notification_text_finished">Pobieranie zakończone</string>
+    <string name="notification_text_finished_error">Błąd pobierania</string>
+</resources>

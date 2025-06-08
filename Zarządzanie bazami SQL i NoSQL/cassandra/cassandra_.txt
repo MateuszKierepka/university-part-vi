@@ -1,0 +1,279 @@
+create keyspace prj_db
+with replication = {
+    'class': 'SimpleStrategy',
+    'replication_factor': 1
+}
+
+Zgromadzenie zapytań w celu stworzenia struktury bazy danych
+
+1) Dane użytkownika po adresie e-mail
+SELECT * FROM users WHERE email = ?
+
+2) Wszystkie dane konkretnego użytkownika wraz z jego adresem
+SELECT
+    u.*,
+    a.*
+FROM users u
+JOIN addresses a ON u.address_id = a.address_id
+WHERE u.user_id = ?
+
+3) Szczegóły filmu
+SELECT * FROM movies WHERE movie_id = ?
+
+4) Wszystkie filmy należące do danej kategorii
+SELECT
+    m.*
+FROM movies m
+JOIN moviecategory mc ON m.movie_id = mc.movie_id
+WHERE mc.category_id = ?
+
+5) Wszystkie kategorie danego filmu
+SELECT
+    c.*
+FROM categories c
+JOIN moviecategory mc on c.category_id = mc.category_id
+WHERE mc.movie_id = ?
+
+6) Wszyscy aktorzy w danym filmie
+SELECT
+    a.*
+FROM actors a
+JOIN movieactor ma ON a.actor_id
+WHERE ma.movie_id = ?
+
+7) Wszystkie filmy danego aktora
+SELECT
+    m.*
+FROM movies m
+JOIN movieactor ma ON m.movie_id = ma.movie_id
+WHERE ma.actor_id = ?
+
+8) Wszystkie języki dostępne dla filmu
+SELECT * FROM subtitles WHERE movie_id = ?
+SELECT * FROM audiotracks WHERE movie_id = ?
+
+9) Historia oglądania użytkownika
+SELECT * FROM watchhistory WHERE user_id = ?
+
+10) Ocena filmu konkretnego użytkownika
+SELECT * FROM ratings where user_id = ? AND movie_id = ?
+
+11) Wszystkie recenzje filmu
+SELECT 
+    r.*
+FROM reviews r
+JOIN ratings rt ON r.rating_id = rt.rating_id
+WHERE rt.movie_id = ?
+
+12) Ulubione filmy użytkownika
+SELECT
+    m.*
+FROM favourites f
+JOIN movies m ON f.movie_id = m.movie_id
+WHERE f.user_id = ?
+
+13) Użytkownicy z aktywnym członkostwem
+SELECT * FROM memberships
+WHERE user_id = ? AND end_date >= CURRENT_DATE
+
+14) Historia płatności użytkownika
+SELECT
+    p.*
+FROM payments p
+JOIN renals r ON p.payment_id = r.payment_id
+JOIN users u ON r.user_id = u.user_id
+WHERE u.user_id = ?
+
+15) Wszystkie wypożyczenia użytkownika
+SELECT * FROM rentals WHERE user_id = ?
+
+=========================================================================
+CREATE TABLE users_by_email (
+    email TEXT PRIMARY KEY,
+    user_id INT,
+    first_name TEXT,
+    last_name TEXT,
+    password TEXT,
+    address_id INT
+);
+
+CREATE TABLE user_with_address (
+    user_id INT PRIMARY KEY,
+    first_name TEXT,
+    last_name TEXT,
+    email TEXT,
+    password TEXT,
+    postal_code TEXT,
+    city TEXT,
+    street TEXT,
+    house_number TEXT,
+    apartment TEXT,
+    country TEXT
+);
+
+CREATE TABLE movie_by_id (
+    movie_id INT PRIMARY KEY,
+    title TEXT,
+    description TEXT,
+    release_year INT,
+    duration INT,
+    rating DOUBLE
+);              
+
+CREATE TABLE movies_by_category (
+    category_id INT,
+    movie_id INT,
+    title TEXT,
+    release_year INT,
+    rating DOUBLE,
+    PRIMARY KEY ((category_id), movie_id)
+);
+
+CREATE TABLE categories_by_movie (
+    movie_id INT,
+    category_id INT,
+    category_name TEXT,
+    PRIMARY KEY ((movie_id), category_id)
+);
+
+CREATE TABLE actors_by_movie (
+    movie_id INT,
+    actor_id INT,
+    first_name TEXT,
+    last_name TEXT,
+    PRIMARY KEY ((movie_id), actor_id)
+);
+
+CREATE TABLE movies_by_actor (
+    actor_id INT,
+    movie_id INT,
+    title TEXT,
+    release_year INT,
+    PRIMARY KEY ((actor_id), movie_id)
+);
+
+CREATE TABLE subtitles_by_movie (
+    movie_id INT,
+    language_code TEXT,
+    language_name TEXT,
+    PRIMARY KEY ((movie_id), language_code)
+);
+
+CREATE TABLE audio_by_movie (
+    movie_id INT,
+    language_code TEXT,
+    language_name TEXT,
+    PRIMARY KEY ((movie_id), language_code)
+);
+
+CREATE TABLE watch_history_by_user (
+    user_id INT,
+    movie_id INT,
+    last_watch_date DATE,
+    time_watched INT,
+    title TEXT,
+    PRIMARY KEY ((user_id), last_watch_date, movie_id)
+)
+
+CREATE TABLE favourites_by_user (
+    user_id INT,
+    movie_id INT,
+    title TEXT,
+    release_year INT,
+    PRIMARY KEY ((user_id), movie_id)
+);
+
+CREATE TABLE ratings_by_user (
+    user_id INT,
+    movie_id INT,
+    rating INT,
+    rating_date DATE,
+    PRIMARY KEY ((user_id), movie_id)
+);
+
+CREATE TABLE reviews_by_movie (
+    movie_id INT,
+    review_id INT,
+    user_id INT,
+    comment TEXT,
+    rating INT,
+    rating_date DATE,
+    PRIMARY KEY ((movie_id), review_id)
+);
+
+CREATE TABLE active_membership_by_user (
+    user_id INT PRIMARY KEY,
+    membership_id INT,
+    plan_id INT,
+    plan_name TEXT,
+    status TEXT,
+    start_date DATE,
+    end_date DATE
+);
+
+CREATE TABLE payments_by_user (
+    user_id INT,
+    payment_id INT,
+    amount DOUBLE,
+    payment_date DATE,
+    method_name TEXT,
+    currency_code TEXT,
+    PRIMARY KEY ((user_id), payment_date, payment_id)
+);
+
+CREATE TABLE rentals_by_user (
+    user_id INT,
+    rental_id INT,
+    movie_id INT,
+    title TEXT,
+    start_date DATE,
+    end_date DATE,
+    payment_id INT,
+    PRIMARY KEY ((user_id), rental_id)
+);
+
+1) Dane użytkownika po adresie e-mail
+SELECT * FROM users_by_email WHERE email = ?
+
+2) Wszystkie dane konkretnego użytkownika wraz z jego adresem
+SELECT * FROM user_with_address WHERE user_id = ?;
+
+3) Szczegóły filmu
+SELECT * FROM movie_by_id WHERE movie_id = ?;
+
+4) Wszystkie filmy należące do danej kategorii
+SELECT * FROM movies_by_category WHERE category_id = ?;
+
+5) Wszystkie kategorie danego filmu
+SELECT * FROM categories_by_movie WHERE movie_id = ?;
+
+6) Wszyscy aktorzy w danym filmie
+SELECT * FROM actors_by_movie WHERE movie_id = ?;
+
+7) Wszystkie filmy danego aktora
+SELECT * FROM movies_by_actor WHERE actor_id = ?;
+
+8) Wszystkie języki dostępne dla filmu
+SELECT * FROM subtitles_by_movie WHERE movie_id = ?;
+SELECT * FROM audio_by_movie WHERE movie_id = ?;
+
+9) Historia oglądania użytkownika
+SELECT * FROM watch_history_by_user WHERE user_id = ?;
+
+10) Ocena filmu konkretnego użytkownika
+SELECT * FROM ratings_by_user WHERE user_id = ? AND movie_id = ?;
+
+11) Wszystkie recenzje filmu
+SELECT * FROM reviews_by_movie WHERE movie_id = ?;
+
+12) Ulubione filmy użytkownika
+SELECT * FROM favourites_by_user WHERE user_id = ?;
+
+13) Użytkownicy z aktywnym członkostwem
+SELECT * FROM active_membership_by_user WHERE user_id = ?;
+
+14) Historia płatności użytkownika
+SELECT * FROM payments_by_user WHERE user_id = ?;
+
+15) Wszystkie wypożyczenia użytkownika
+SELECT * FROM rentals_by_user WHERE user_id = ?;
