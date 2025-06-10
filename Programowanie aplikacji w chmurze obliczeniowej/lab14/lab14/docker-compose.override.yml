@@ -1,0 +1,19 @@
+services:
+  nginx:
+    ports:
+      - "4001:80"
+
+  mysql:
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test_db
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+
+  phpmyadmin:
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - "6001:80" 
