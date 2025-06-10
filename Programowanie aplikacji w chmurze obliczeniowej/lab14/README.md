@@ -51,11 +51,11 @@ Aplikacja zawiera cztery kontenery (mikrousługi):
 
 3. Weryfikacja działania stack-a LEMP - sprawdzenie strony głównej:
 
-![Strona główna](1.png)
+![Strona główna](screenshots/1.png)
 
 4. Weryfikacja działania phpMyAdmin i bazy danych:
 
-![phpMyAdmin z test_db](2.png)
+![phpMyAdmin z test_db](screenshots/2.png)
 
 5. Zatrzymanie i usunięcie kontenerów:
 ```bash
