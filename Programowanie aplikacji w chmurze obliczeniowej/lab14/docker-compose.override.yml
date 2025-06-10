@@ -5,10 +5,13 @@ services:
 
   mysql:
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
       MYSQL_DATABASE: test_db
       MYSQL_USER: test
-      MYSQL_PASSWORD: test
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+    secrets:
+      - mysql_root_password
+      - mysql_password
 
   phpmyadmin:
     environment:
@@ -16,4 +19,10 @@ services:
       PMA_USER: root
       PMA_PASSWORD: root
     ports:
-      - "6001:80" 
+      - "6001:80"
+
+secrets:
+  mysql_root_password:
+    file: ./secrets/mysql_root_password.txt
+  mysql_password:
+    file: ./secrets/mysql_password.txt
